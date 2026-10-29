@@ -12,13 +12,10 @@ Organizations manage fleets of computers with different operating systems, hardw
 
 This project frames that as a **binary classification** task: use a device's recorded system and security attributes to predict its `target` label. The model is a decision-support experiment; it does not diagnose malware, establish causality, or take actions on devices. The original data documentation should be consulted for the precise target-label definition and collection process.
 
-### Intended business value
-
-If a model were validated and deployed responsibly, it could help an operations or security team rank devices for follow-up, allocate analyst time, and identify patterns associated with higher threat labels. This project does not measure saved time, prevented incidents, financial benefit, or operational outcomes. Those impacts would need to be evaluated in a pilot against an existing workflow.
 
 ## Dataset selection
 
-The notebook uses the **System-Threat-Forecaster** dataset supplied as separate labeled training and unlabeled test files. The features describe device, operating system, hardware, and security configuration. The labeled file contains the `target` column; the test file is used to demonstrate generating predictions.
+The notebook uses the **System-Threat-Forecaster** dataset supplied as separate labeled training and unlabeled test files from kaggle. The features describe device, operating system, hardware, and security configuration. The labeled file contains the `target` column; the test file is used to demonstrate generating predictions.
 
 The dataset is suitable for a tabular classification exercise because it contains mixed categorical and numerical fields, missing values, high-cardinality fields, and a binary target. It also provides a separate test file for a final prediction workflow.
 
