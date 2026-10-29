@@ -30,7 +30,6 @@ The CSVs are not redistributed here. Obtain them from the original competition o
 project/
 ├── Classification.ipynb
 ├── README.md
-├── requirements.txt
 └── data/
     ├── train.csv
     └── test.csv
@@ -138,53 +137,3 @@ The notebook uses `RandomizedSearchCV` and `GridSearchCV` with accuracy as the s
 
 The tuned XGBoost cell records a best cross-validation score of approximately 0.7800 but a holdout accuracy of 0.5771. These are different evaluation quantities and should not be compared as though they were the same score. The gap is unusually large and warrants checking the notebook's target encoding, preprocessing, parameter search and evaluation flow before relying on that tuning result.
 
-## Challenges and limitations
-
-- **Missing values and placeholders:** missingness appears in many features, while string placeholders can represent unknown or unavailable values. The current checks do not fully unify these representations.
-- **Mixed feature types:** some integer columns represent categories or identifiers, so type-based handling alone is insufficient.
-- **High cardinality:** one-hot encoding can expand the feature space; target encoding has its own leakage and validation risks if not carefully cross-fitted.
-- **Overfitting:** the untuned Decision Tree and Random Forest reach perfect training accuracy but much lower validation accuracy.
-- **Metric choice:** accuracy does not encode operational costs or provide a threshold tradeoff. In a security setting, recall for the threat class and precision at an actionable alert volume may matter more.
-- **Tuning/evaluation inconsistency:** the saved XGBoost cross-validation score differs sharply from its holdout score and should be investigated.
-- **Notebook portability:** the original notebook was created in Kaggle and depends on the external data files and compatible package versions. This cleaned copy uses local relative data paths.
-- **Reproducibility:** `requirements.txt` lists package names but does not lock exact versions, and the notebook contains exploratory choices that require review before production use.
-- **No deployment evaluation:** inference latency, calibration, threshold selection, monitoring, privacy, security review, and business outcomes are not measured.
-
-## Business impact
-
-No realized business impact can be claimed from this notebook. The project demonstrates how device telemetry could be used to support threat prioritization, but it does not establish that the classifier improves incident detection, reduces analyst workload, or prevents losses. A business impact study would require a defined workflow, a selected operating threshold, measured false-positive and false-negative costs, comparison to the current process, and a monitored pilot.
-
-## Future improvements
-
-1. **Confirm target semantics and data provenance.** Document what each target class means, how labels were created, the time period, and the dataset license.
-2. **Establish a strong baseline.** Compare against majority-class and simple rule-based baselines, and report balanced accuracy and class-wise metrics.
-3. **Use metrics aligned with operations.** Add confusion matrices, precision/recall, F1, ROC-AUC, PR-AUC, and threshold analysis; prioritize recall or precision based on stakeholder costs.
-4. **Audit validation and leakage.** Put all preprocessing and target encoding inside a cross-validated pipeline, use out-of-fold encoding where appropriate, and preserve a final untouched test split. Investigate the XGBoost CV/holdout discrepancy.
-5. **Improve the validation design.** Consider repeated stratified cross-validation or a time-based split if records have temporal ordering, and quantify score variability.
-6. **Refine data cleaning and features.** Normalize missing-value markers consistently, verify units and custom formulas such as `PPI`, and evaluate feature groups and outlier treatment systematically.
-7. **Control overfitting and complexity.** Tune tree regularization and compare simpler models; assess feature importance with permutation or SHAP-style methods while accounting for correlated fields.
-8. **Reproducibility.** Pin dependency versions, add a data dictionary, record random seeds and experiment settings, and provide a clean environment/setup workflow.
-9. **Operationalize only after validation.** Calibrate probabilities, select thresholds with stakeholders, assess subgroup performance, document privacy/security controls, then monitor drift and outcomes in a limited pilot.
-
-## Setup and run
-
-Requires Python 3.10 or newer and the CSV files described above.
-
-```bash
-python -m venv .venv
-# Activate the environment, then:
-pip install -r requirements.txt
-jupyter notebook Classification.ipynb
-```
-
-To run the revised model workflow instead of the exploratory notebook:
-
-```bash
-python classification_model.py
-```
-
-The script fits a baseline and tunes a Random Forest using cross-validation with preprocessing inside the pipeline. It reports holdout metrics, refits the selected configuration on all labeled rows, and writes `submission.csv` in the project directory. Verify the expected submission ID and column schema against the original competition/source before submitting.
-
-## License and data use
-
-No project or dataset license is specified here. Add an appropriate license before redistribution, and follow the dataset provider's terms for the data and derived outputs.
