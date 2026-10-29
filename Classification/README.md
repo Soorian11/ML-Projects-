@@ -21,7 +21,7 @@ The dataset is suitable for a tabular classification exercise because it contain
 
 ### Obtain and place the data
 
-The CSVs are not redistributed here. Obtain them from the original competition or data source, and arrange the project like this:
+
 
 ```text
 project/
@@ -32,7 +32,6 @@ project/
     └── test.csv
 ```
 
-The notebook and script expect the paths `data/train.csv` and `data/test.csv`, relative to their project directory. The labeled training file must include `target`. Do not commit data if its source terms prohibit redistribution; check the applicable license and competition rules first.
 
 ## Machine learning lifecycle
 
