@@ -2,7 +2,7 @@
 
 A supervised machine learning project that predicts a property's `TargetPrice` from tabular property and neighborhood attributes. The notebook explores the data, compares regression models with cross-validation, tunes a decision tree, evaluates errors, and creates predictions for an unlabeled competition test set.
 
-> **Project status:** Educational/competition analysis. The reported scores are internal cross-validation results from the saved notebook. They are not a measure of performance in a live property market.
+
 
 ## Business problem
 
@@ -10,11 +10,6 @@ Property valuation teams, lenders, real estate platforms, and prospective buyers
 
 This notebook frames the task as **regression**: predict the continuous `TargetPrice` field from the available features. The model is not an appraisal, does not establish causal drivers of price, and should not be used for financial decisions without appropriate validation and oversight.
 
-### Potential business value
-
-A well-validated price estimate could help reduce repetitive valuation work, make initial estimates more consistent, and direct analysts toward unusual or uncertain cases. This project did not measure time saved, valuation accuracy in practice, revenue, or customer outcomes, so no realized business impact is claimed.
-
-## Dataset selection
 
 The notebook uses the **House Price Prediction Challenge Regression** dataset from Kaggle, read from `estate_train.csv` and `estate_test.csv`.
 
@@ -34,15 +29,14 @@ The notebook currently reads the files from Kaggle-specific paths. Download the 
 
 ```text
 project/
-├── README_House_Price_Regression.md
-├── house_price_prediction.ipynb
+├── README.md
+├── regression.ipynb
 └── data/
     ├── estate_train.csv
     └── estate_test.csv
 ```
 
 Do not redistribute the dataset unless its license and competition rules allow it. No data license or project license is specified in the notebook.
-
 ## Machine learning lifecycle
 
 1. **Problem definition:** estimate a continuous property price from property and neighborhood attributes.
@@ -132,39 +126,5 @@ The notebook uses **RMSE** (root mean squared error) for most regression experim
 
 The Random Forest has the lowest reported RMSE among the listed RMSE experiments. Its training RMSE is 0.191, while its validation RMSE is 0.517, suggesting a generalization gap and potential overfitting. The polynomial model's MAE varies substantially across splits (standard deviation 0.223), so its mean should be treated cautiously.
 
-## Challenges and limitations
 
-- `PropertyAge` contains missing values and needs a consistent imputation strategy.
-- There are 20 negative neighborhood-population records; their meaning and treatment are unresolved.
-- `RoomsPerHousehold` and `BedroomsRatio` are included in training, but their derivation and availability in test data are not documented.
-- Early train/validation scaling is performed by separate `fit_transform` calls, which is not the correct validation workflow.
-- The initial holdout split is not used consistently: most model comparisons and the tuned tree search run cross-validation on the full labeled dataset.
-- Model comparisons use different metrics (RMSE versus MAE), making a single ranking inappropriate without recomputing a common metric.
-- The random forest shows a notable training/validation gap.
-- No residual analysis, prediction interval, geographic holdout, fairness analysis, or external validation is reported.
-- The target unit and exact dataset license are not documented.
 
-## Business impact
-
-No realized business impact can be claimed from these experiments. The model could be explored as a first-pass estimate or analyst triage aid, but a real valuation workflow would require out-of-time or out-of-area validation, a documented target scale, error analysis for high- and low-value properties, and comparison with current valuation practice.
-
-## Future improvements
-
-1. Use a single preprocessing/model pipeline throughout, including the initial holdout evaluation.
-2. Reserve an untouched test/holdout set and do all model selection using training-only cross-validation.
-3. Recompute every model using the same primary metric, such as RMSE, and add MAE and R² for context.
-4. Investigate negative population values and missing property ages with domain context; document the chosen treatment.
-5. Confirm that engineered ratio fields exist in both splits, document their formulas, and avoid leakage from target-derived features.
-6. Compare against a stronger baseline and inspect residuals by price range and geographic region.
-7. Consider group- or time-based validation if properties share neighborhoods or collection periods.
-8. Quantify uncertainty with prediction intervals and test calibration of uncertainty estimates.
-9. Pin package versions, use local relative data paths, document data provenance, and record reproducible experiment settings.
-10. Pilot only after independent validation, with human review and monitoring for changes in geography, market conditions, and input data quality.
-
-## Running the notebook
-
-Install the required packages (at minimum `pandas`, `numpy`, `scikit-learn`, `matplotlib`, and `seaborn`), configure the two dataset paths in the first data-loading cell, then run cells from top to bottom. The last prediction cell writes `submission.csv` with `PropertyID` and `TargetPrice`.
-
-## License and attribution
-
-Add a project license if you plan to publish code. Follow the original dataset's license and competition rules for source data and generated predictions; no license was included in the notebook.
