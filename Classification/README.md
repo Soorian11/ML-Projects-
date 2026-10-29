@@ -6,12 +6,6 @@ A machine learning project that explores system telemetry and predicts whether a
 
 ## Contents
 
-- [`Classification.ipynb`](Classification.ipynb): exploratory analysis and original model comparison notebook.
-- [`Classification_Corrected.ipynb`](Classification_Corrected.ipynb): revised, runnable notebook with consistent preprocessing, pipeline-based cross-validation, holdout evaluation, and test prediction generation.
-- [`classification_model.py`](classification_model.py): equivalent script version of the revised workflow.
-- `requirements.txt`: Python packages used by the notebook.
-- `data/` (provided by you): source CSV files. The dataset is not included in this repository.
-
 ## Business problem
 
 Organizations manage fleets of computers with different operating systems, hardware configurations, security settings, and protection states. A system that is more likely to be threatened may warrant closer review or additional protective action. Reviewing every device manually is costly, so a classifier could help prioritize devices for investigation.
